@@ -1,19 +1,30 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { UsersListComponent } from './users-list/users-list.component'
+import { HttpClientModule } from '@angular/common/http'
+import { ReactiveFormsModule } from '@angular/forms';
+
+import { UserService } from './user.service';
+
+import { UsersListComponent } from './users-list/users-list.component';
+import { UserInsertComponent } from './user-insert/user-insert.component'
 
 const routes: Routes = [
-  {path: 'list', component: UsersListComponent}
+  {path: 'list', component: UsersListComponent},
+  {path: 'insert', component: UserInsertComponent},
 ];
 
 @NgModule({
   declarations: [
-    UsersListComponent
+    UsersListComponent,
+    UserInsertComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
-  ]
+    RouterModule.forChild(routes),
+    HttpClientModule,
+    ReactiveFormsModule,
+  ],
+  providers: [UserService]
 })
 export class UserModule { }

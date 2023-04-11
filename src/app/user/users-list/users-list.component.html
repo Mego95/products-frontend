@@ -1,1 +1,38 @@
-<p>users-list works!</p>
+<div *ngIf="loading" class="mt-2 row alert alert-info">
+    Loading users ...
+    <div class="spinner-border text-primary" role="status">
+        <span class="sr-only"></span>
+    </div>
+</div>
+
+<div *ngIf="userList.length">
+    <table class="table table-striped">
+        <thead>
+            <th scope="col"><button class="btn btn-secondary btn-sm" (click)="toggleSort('username')">username</button></th>
+            <th scope="col"><button class="btn btn-sm btn-secondary" (click)="toggleSort('name')">Firstname</button></th>
+            <th scope="col"><button class="btn btn-secondary btn-sm" (click)="toggleSort('surname')">Lastname</button></th>
+            <th scope="col">Email</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+        </thead>
+        <tbody>
+            <tr *ngFor="let user of userList">
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.surname }}</td>
+                <td>{{ user.email }}</td>
+                <td>
+                    {{ user.address.area }} <br>
+                    {{ user.address.road }}
+                </td>
+                <td>
+                    <div *ngFor="let phone of user.phone">
+                        <strong>{{ phone.type }}</strong>
+                        <br>
+                        {{ phone.number }}
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
