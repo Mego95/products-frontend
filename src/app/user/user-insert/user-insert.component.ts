@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { UserService } from '../user.service';
+import { User } from '../user.interfaces';
 
 @Component({
   selector: 'app-user-insert',
@@ -37,4 +38,26 @@ export class UserInsertComponent {
     return (this.form.get('phone') as FormArray).controls;
   }
 
+
+  addPhone(): void {
+    const phones = this.form.get('phone') as FormArray;
+    phones.push(this.initPhone());
+  }
+
+  removePhone(index: number): void {
+    const phones = this.form.get('phone') as FormArray;
+    phones.removeAt(index);
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      console.log(this.form.value);
+      const user = this.form.value as User;
+      this.userService.insert(user).subscribe((response) => {
+        console.log(response);
+      });
+    } else {
+      console.log('Form is not valid');
+    }
+  }
 }
