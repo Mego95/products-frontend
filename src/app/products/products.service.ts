@@ -11,4 +11,8 @@ export class ProductsService {
     findAll() {
         return this.http.get<ProductsAPIList>(`${PRODUCTS_API}/findall`);
     }
+
+    insert(product: Product) {
+        return this.http.post<ProductsAPIList>(`${PRODUCTS_API}/create`, product);
+    }
 }
