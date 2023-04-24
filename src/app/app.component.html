@@ -4,11 +4,22 @@
       <span class="navbar-brand">
         <strong><a href="#" routerLink="" class="text-decoration-none text-black">{{title}}</a></strong>
       </span>
-     <span> Coding Factory</span>
-     <ul class="navbar-nav">
+
+
+     <span *ngIf="!(isLoggedIn$ | async); else fullname"> Coding Factory</span>
+     <ng-template #fullname>
+      <span>{{ loggedInUserName$ | async }}</span>
+      <button class="ms-2 btn btn-danger btn-sm" (click)="logout()"></button>
+     </ng-template>
+
+
+     <ul *ngIf="isLoggedIn$ | async; else loggedout" class="navbar-nav">
       <lib-dropdown [dropdownLabel]="'Users'" [items]="usersMenu"></lib-dropdown>
       <lib-dropdown [dropdownLabel]="'Products'" [items]="productsMenu"></lib-dropdown>
     </ul>
+    <ng-template #loggedout>
+      <a class="btn btn-primary btn-sm" routerLink="/login">Login</a>
+    </ng-template>
     </nav>
    </div>
   <div class="row mt-2">
