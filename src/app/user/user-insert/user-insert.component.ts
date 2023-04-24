@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { UserService } from '../user.service';
-import { User } from '../user.interfaces';
+import { User } from 'shared';
 
 @Component({
   selector: 'app-user-insert',
