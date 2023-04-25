@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User, UserAPIUserOne } from 'shared';
 import { BehaviorSubject } from 'rxjs';
+import { UiService } from 'ui';
+import { Router } from '@angular/router';
 
 const USER_API = 'https://codingfactory.ddns.net/api/user';
 
@@ -15,15 +17,27 @@ export class AppService {
   private loggedInUserNameSubject= new BehaviorSubject<string>('');
   loggedInUserName$ = this.loggedInUserNameSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private alertService: UiService, private router: Router) { }
 
   login(username:string, password:string) {
     this.http
     .get<UserAPIUserOne>(`${USER_API}/findone/${username}`)
     .subscribe((res) => {
-      if (res.data) {
+      if (res.data && res.data.password === password) {
         this.loggedInSubject.next(res.data.password === password);
         this.loggedInUserNameSubject.next(`${res.data.name} ${res.data.surname}`);
+        this.alertService.newAlert({
+          type: 'success',
+          heading: `Welcome ${this.loggedInUserNameSubject.value}`,
+          text: 'Nice to see you again!',
+        })
+        this.router.navigate(['/user'])
+      } else {
+        this.alertService.newAlert({
+          type:'danger', 
+          heading:'Authentication Error', 
+          text: 'Wrong username or password'
+        });
       }
     });
   }
@@ -31,5 +45,6 @@ export class AppService {
   logout() {
     this.loggedInSubject.next(false);
     this.loggedInUserNameSubject.next('');
+    this.router.navigate(['/'])
   }
 }
