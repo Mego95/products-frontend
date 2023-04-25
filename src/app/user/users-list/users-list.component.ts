@@ -3,6 +3,7 @@ import { UserService } from '../user.service';
 import { User, UserAPIList } from 'shared';
 import { Subscription } from 'rxjs';
 import { orderBy } from 'lodash-es';
+import { AppService } from 'src/app/app.service';
 
 @Component({
   selector: 'app-users-list',
@@ -10,7 +11,7 @@ import { orderBy } from 'lodash-es';
   styleUrls: ['./users-list.component.css']
 })
 export class UsersListComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private appService: AppService) {}
 
   loading = false;
   userList: User[] = [];
@@ -22,7 +23,8 @@ export class UsersListComponent implements OnInit {
 
   ngOnInit(): void {
     console.log('Starting "findall" api call');
-    this.loading = true;
+    // this.loading = true;
+    this.appService.setIsLoading(true);
     this.subscription = this.userService.findAll().subscribe({
       next: (apiData: UserAPIList) => {
         const {status, data} = apiData;
@@ -31,11 +33,13 @@ export class UsersListComponent implements OnInit {
       },
       error: (error) => {
         console.log(error);
-        this.loading = false;
+        // this.loading = false;
+        this.appService.setIsLoading(false);
       },
       complete: () => {
         console.log('finished api call');
-        this.loading = false;
+        // this.loading = false;
+        this.appService.setIsLoading(false);
       }
     })
   }

@@ -15,6 +15,7 @@ export class AppComponent {
 
   isLoggedIn$ = this.service.isLoggedIn$;
   loggedInUserName$ = this.service.loggedInUserName$;
+  isLoading$ = this.service.isLoading$;
 
   alerts = this.uiService.alerts;
 

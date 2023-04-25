@@ -17,9 +17,13 @@ export class AppService {
   private loggedInUserNameSubject= new BehaviorSubject<string>('');
   loggedInUserName$ = this.loggedInUserNameSubject.asObservable();
 
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
+  isLoading$ = this.isLoadingSubject.asObservable();
+
   constructor(private http: HttpClient, private alertService: UiService, private router: Router) { }
 
   login(username:string, password:string) {
+    this.setIsLoading(true);
     this.http
     .get<UserAPIUserOne>(`${USER_API}/findone/${username}`)
     .subscribe((res) => {
@@ -39,6 +43,7 @@ export class AppService {
           text: 'Wrong username or password'
         });
       }
+      this.setIsLoading(false);
     });
   }
 
@@ -46,5 +51,9 @@ export class AppService {
     this.loggedInSubject.next(false);
     this.loggedInUserNameSubject.next('');
     this.router.navigate(['/'])
+  }
+
+  setIsLoading(isLoading: boolean) {
+    this.isLoadingSubject.next(isLoading);
   }
 }
